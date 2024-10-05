@@ -75,7 +75,7 @@ def read_repo_to_string(repo_path: str) -> str:
 # aws bedrock to identify all gen ai functions in the project
 def create_prompt(project_str: str) -> str:
     prompt = (
-        "Can you identify all generative AI functions and tokens in the following project. Can you also provide the integer number of functions, and  tokens used:\n\n"
+        "Can you identify all generative AI functions and tokens in the following project. Can you also provide the integer number of functions, and  tokens used. Can you also provide a breif description of what the project does:\n\n"
         f"{project_str}\n\n"
     )
     return prompt
