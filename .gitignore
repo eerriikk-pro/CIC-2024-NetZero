@@ -1,6 +1,8 @@
 # Ignore extracted files
 *_extracted/
 *extracted_repos/
+sus_papers
+Embed/sus_files
 
 repo
 pull_gh_lambda
