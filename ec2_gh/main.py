@@ -1,7 +1,10 @@
+# Imports
+############################################
 import requests
 import re
 import zipfile
 import io
+import os
 
 # url = "https://api.github.com/repos/eerriikk-pro/nwHacks2024/zipball"
 # response = requests.request("GET", url)
@@ -18,7 +21,11 @@ import io
 #     print(f"Failed to retrieve data: {response.status_code} {response.reason}")
 
 
-def download_github_repo(repo_url):
+# Functions
+############################################
+
+# Downloads a gitHub repository as a zip file and extract it
+def download_github_repo(repo_url) -> None:
     # extract owner and repo name from the URL using regex match
     match = re.match(r'https://github.com/([^/]+)/([^/]+)', repo_url)
     if not match:
@@ -36,14 +43,58 @@ def download_github_repo(repo_url):
             file.write(response.content)
         print(f"Data saved to {filename}")
 
-        # unzip the file on 200
+        # create a directory to unzip the file into
+        extract_dir = f"{repo}_extracted"
         with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
-            zip_ref.extractall(f"{repo}")
-        print(f"Data extracted to {repo}/")
+            zip_ref.extractall(extract_dir)
+        print(f"Data extracted to {extract_dir}/")
     else:
         print(f"Failed to retrieve data: {response.status_code} {response.reason}")
 
 
+# Reads a file and returns its content as a string
+def read_file_to_string(file_path: str) -> str:
+    try:
+        with open(file_path, 'r') as file:
+            content = file.read()
+        return content
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Reads all files in a directory and returns their content as a string. 
+# Each files content is separated by a newline character and the file name is included as a comment
+def read_repo_to_string(repo_path: str) -> str:
+    repo_content = ""
+    for root, _, files in os.walk(repo_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            file_content = read_file_to_string(file_path)
+            if file_content:
+                repo_content += f"# {file_path}\n{file_content}\n\n"
+    return repo_content
+
+# Takes in a string representing the project, and creates a prompt to ask
+# aws bedrock to identify all gen ai functions in the project
+def create_prompt(project_str: str) -> str:
+    prompt = (
+        "Please identify all generative AI functions in the following project:\n\n"
+        f"{project_str}\n\n"
+        "List each function with a brief description of what it does."
+    )
+    return prompt
+
+    
+
+
+
 # testing
+############################################
 repo_url = "https://github.com/eerriikk-pro/nwHacks2024"
 download_github_repo(repo_url)
+
+repo_path = "nwHacks2024_extracted"
+repo_content = read_repo_to_string(repo_path)
+prompt = create_prompt(repo_content)
+# print(prompt) # prolly don't print this
