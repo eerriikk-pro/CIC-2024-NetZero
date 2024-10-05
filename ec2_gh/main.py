@@ -93,6 +93,14 @@ def get_ai_response(prompt: str) -> str:
     response = requests.request("POST", bedrock_api, headers=headers, data=payload)
     return response.text
 
+
+def get_repo_info(repo_url: str) -> str:
+    repo_path = download_github_repo(repo_url)
+    repo_str = read_repo_to_string(repo_path)
+    prompt = create_prompt(repo_str)
+    response = get_ai_response(prompt)
+    return response
+
     
 
 
@@ -100,8 +108,5 @@ def get_ai_response(prompt: str) -> str:
 # testing
 ############################################
 repo_url = "https://github.com/eerriikk-pro/nwHacks2024"
-repo_path = download_github_repo(repo_url)
-repo_str = read_repo_to_string(repo_path)
-prompt = create_prompt(repo_str)
-response = get_ai_response(prompt)
+response = get_repo_info(repo_url)
 print(response)
