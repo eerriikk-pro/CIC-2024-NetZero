@@ -46,7 +46,10 @@ def download_github_repo(repo_url) -> str:
         print(f"Data saved to {filename}")
 
         # create a directory to unzip the file into
-        extract_dir = f"{repo}_extracted"
+        extract_dir = os.path.join("extracted_repos", f"{repo}_extracted")
+        os.makedirs(extract_dir, exist_ok=True)
+        
+        # unzip the file on 200
         with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
             zip_ref.extractall(extract_dir)
         print(f"Data extracted to {extract_dir}/")
@@ -54,7 +57,6 @@ def download_github_repo(repo_url) -> str:
         return extract_dir
     else:
         print(f"Failed to retrieve data: {response.status_code} {response.reason}")
-
 
 # Reads a file and returns its content as a string
 def read_file_to_string(file_path: str) -> str:
