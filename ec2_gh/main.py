@@ -107,6 +107,7 @@ def get_repo_info(repo_url: str) -> str:
 
 # testing
 ############################################
-repo_url = "https://github.com/eerriikk-pro/nwHacks2024"
-response = get_repo_info(repo_url)
-print(response)
+if __name__ == "__main__":
+    repo_url = "https://github.com/eerriikk-pro/nwHacks2024"
+    response = get_repo_info(repo_url)
+    print(response)
