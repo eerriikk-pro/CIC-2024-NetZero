@@ -1,10 +1,11 @@
 # Imports
 ############################################
-import requests
-import re
-import zipfile
 import io
 import os
+import re
+import zipfile
+
+import requests
 
 # url = "https://api.github.com/repos/eerriikk-pro/nwHacks2024/zipball"
 # response = requests.request("GET", url)
@@ -24,17 +25,18 @@ import os
 # Functions
 ############################################
 
+
 # Downloads a gitHub repository as a zip file and extract it
 def download_github_repo(repo_url) -> None:
     # extract owner and repo name from the URL using regex match
-    match = re.match(r'https://github.com/([^/]+)/([^/]+)', repo_url)
+    match = re.match(r"https://github.com/([^/]+)/([^/]+)", repo_url)
     if not match:
         print("Invalid GitHub URL")
         return
 
     owner, repo = match.groups()
     api_url = f"https://api.github.com/repos/{owner}/{repo}/zipball"
-    
+
     response = requests.get(api_url)
 
     if response.status_code == 200:
@@ -55,7 +57,7 @@ def download_github_repo(repo_url) -> None:
 # Reads a file and returns its content as a string
 def read_file_to_string(file_path: str) -> str:
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, "r") as file:
             content = file.read()
         return content
     except FileNotFoundError:
@@ -63,7 +65,8 @@ def read_file_to_string(file_path: str) -> str:
     except Exception as e:
         print(f"An error occurred: {e}")
 
-# Reads all files in a directory and returns their content as a string. 
+
+# Reads all files in a directory and returns their content as a string.
 # Each files content is separated by a newline character and the file name is included as a comment
 def read_repo_to_string(repo_path: str) -> str:
     repo_content = ""
@@ -75,6 +78,7 @@ def read_repo_to_string(repo_path: str) -> str:
                 repo_content += f"# {file_path}\n{file_content}\n\n"
     return repo_content
 
+
 # Takes in a string representing the project, and creates a prompt to ask
 # aws bedrock to identify all gen ai functions in the project
 def create_prompt(project_str: str) -> str:
@@ -85,16 +89,14 @@ def create_prompt(project_str: str) -> str:
     )
     return prompt
 
-    
 
+if __name__ == "__main__":
+    # testing
+    ############################################
+    repo_url = "https://github.com/eerriikk-pro/nwHacks2024"
+    download_github_repo(repo_url)
 
-
-# testing
-############################################
-repo_url = "https://github.com/eerriikk-pro/nwHacks2024"
-download_github_repo(repo_url)
-
-repo_path = "nwHacks2024_extracted"
-repo_content = read_repo_to_string(repo_path)
-prompt = create_prompt(repo_content)
-# print(prompt) # prolly don't print this
+    repo_path = "nwHacks2024_extracted"
+    repo_content = read_repo_to_string(repo_path)
+    prompt = create_prompt(repo_content)
+    # print(prompt) # prolly don't print this
