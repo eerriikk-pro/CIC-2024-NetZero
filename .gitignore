@@ -1,5 +1,6 @@
 # Ignore extracted files
 *_extracted/
+*extracted_repos/
 
 repo
 pull_gh_lambda
