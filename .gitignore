@@ -1,3 +1,6 @@
+# Ignore extracted files
+*_extracted/
+
 repo
 pull_gh_lambda
 # Byte-compiled / optimized / DLL files

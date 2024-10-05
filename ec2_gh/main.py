@@ -27,7 +27,7 @@ import requests
 
 
 # Downloads a gitHub repository as a zip file and extract it
-def download_github_repo(repo_url) -> None:
+def download_github_repo(repo_url) -> str:
     # extract owner and repo name from the URL using regex match
     match = re.match(r"https://github.com/([^/]+)/([^/]+)", repo_url)
     if not match:
@@ -50,6 +50,8 @@ def download_github_repo(repo_url) -> None:
         with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
             zip_ref.extractall(extract_dir)
         print(f"Data extracted to {extract_dir}/")
+
+        return extract_dir
     else:
         print(f"Failed to retrieve data: {response.status_code} {response.reason}")
 
