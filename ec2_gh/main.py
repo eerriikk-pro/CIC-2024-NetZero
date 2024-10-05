@@ -100,11 +100,8 @@ def get_ai_response(prompt: str) -> str:
 # testing
 ############################################
 repo_url = "https://github.com/eerriikk-pro/nwHacks2024"
-download_github_repo(repo_url)
-
-repo_path = "nwHacks2024_extracted"
-repo_content = read_repo_to_string(repo_path)
-prompt = create_prompt(repo_content)
-# print(prompt) # prolly don't print this
-
+repo_path = download_github_repo(repo_url)
+repo_str = read_repo_to_string(repo_path)
+prompt = create_prompt(repo_str)
 response = get_ai_response(prompt)
+print(response)
