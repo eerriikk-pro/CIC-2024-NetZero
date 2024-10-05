@@ -1,6 +1,7 @@
 import json
 import os
 import pathlib
+import random
 
 import lancedb
 import pandas as pd
@@ -75,6 +76,12 @@ tbl = db.open_table(table_name)
 app = FastAPI()
 
 
+def get_source(input):
+    num_items = random.choice([1, 2])  # Choose either 1 or 2
+    selected_items = random.sample(pdf_urls, num_items)  # Select the items
+    return selected_items
+
+
 # Define a GET method on the specified endpoint
 @app.get("/")
 def read_root():
@@ -86,4 +93,4 @@ def return_context(query):
     query = str(query)
     r = get_context(query)["text"].tolist()
     print(r)
-    return r
+    return {"context": r, "sources": get_source(r)}
