@@ -44,4 +44,4 @@ const allStatsComponent = (props) => {
    )
 }
 
-export default allStatsComponent
+export default allStatsComponent;

@@ -1,0 +1,15 @@
+.dualBox {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: row;
+   flex-wrap: wrap;
+   gap: 10px;
+ }
+
+.statNumber {
+  border-radius: 1rem;
+  padding: 1rem;
+  background-color: rgb(228, 229, 224);
+}
+ 
